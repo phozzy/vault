@@ -56,15 +56,22 @@ func (c *SQLConnectionProducer) Init(ctx context.Context, conf map[string]interf
 	}
 
 	// Don't escape special characters for MySQL password
+	// Also don't escape special characters for the username and password if
+	// the disable_escaping parameter is set to true
+	disableEscaping := c.RawConfig["disable_escaping"].(bool)
+	username := c.Username
 	password := c.Password
-	if c.Type != "mysql" {
+	if !disableEscaping {
+		username = url.PathEscape(c.Username)
+	}
+	if (c.Type != "mysql") && !disableEscaping {
 		password = url.PathEscape(c.Password)
 	}
 
 	// QueryHelper doesn't do any SQL escaping, but if it starts to do so
 	// then maybe we won't be able to use it to do URL substitution any more.
 	c.ConnectionURL = dbutil.QueryHelper(c.ConnectionURL, map[string]string{
-		"username": url.PathEscape(c.Username),
+		"username": username,
 		"password": password,
 	})
 

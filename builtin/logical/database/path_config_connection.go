@@ -31,6 +31,8 @@ type DatabaseConfig struct {
 	RootCredentialsRotateStatements []string `json:"root_credentials_rotate_statements" structs:"root_credentials_rotate_statements" mapstructure:"root_credentials_rotate_statements"`
 
 	PasswordPolicy string `json:"password_policy" structs:"password_policy" mapstructure:"password_policy"`
+
+	DisableEscaping bool `json:"disable_escaping" structs:"disable_escaping" mapstructure:"disable_escaping"`
 }
 
 // pathResetConnection configures a path to reset a plugin.
@@ -118,6 +120,11 @@ func pathConfigurePluginConnection(b *databaseBackend) *framework.Path {
 			"password_policy": {
 				Type:        framework.TypeString,
 				Description: `Password policy to use when generating passwords.`,
+			},
+			"disable_escaping": {
+				Type: framework.TypeBool,
+				Description: `If true, special characters in the username and
+				password will not be escaped when connecting to the database.`,
 			},
 		},
 
@@ -284,6 +291,10 @@ func (b *databaseBackend) connectionWriteHandler() framework.OperationFunc {
 			config.PasswordPolicy = passwordPolicyRaw.(string)
 		}
 
+		if disableEscapingRaw, ok := data.GetOk("disable_escaping"); ok {
+			config.DisableEscaping = disableEscapingRaw.(bool)
+		}
+
 		// Remove these entries from the data before we store it keyed under
 		// ConnectionDetails.
 		delete(data.Raw, "name")
@@ -292,6 +303,7 @@ func (b *databaseBackend) connectionWriteHandler() framework.OperationFunc {
 		delete(data.Raw, "verify_connection")
 		delete(data.Raw, "root_rotation_statements")
 		delete(data.Raw, "password_policy")
+		delete(data.Raw, "disable_escaping")
 
 		id, err := uuid.GenerateUUID()
 		if err != nil {
@@ -311,6 +323,7 @@ func (b *databaseBackend) connectionWriteHandler() framework.OperationFunc {
 				config.ConnectionDetails[k] = v
 			}
 		}
+		config.ConnectionDetails["disable_escaping"] = config.DisableEscaping
 
 		// Create a database plugin and initialize it.
 		dbw, err := newDatabaseWrapper(ctx, config.PluginName, b.System(), b.logger)
