@@ -173,7 +173,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
 	golang.org/x/net v0.0.0-20211020060615-d418f374d309
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	golang.org/x/sys v0.0.0-20211025201205-69cdffdb9359
+	golang.org/x/sys v0.0.0-20211116061358-0a5406a5449c
 	golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b
 	golang.org/x/tools v0.1.5
 	google.golang.org/api v0.30.0
@@ -309,7 +309,7 @@ require (
 	github.com/mitchellh/iochan v1.0.0 // indirect
 	github.com/mitchellh/pointerstructure v1.2.0 // indirect
 	github.com/moby/sys/mount v0.2.0 // indirect
-	github.com/moby/sys/mountinfo v0.4.1 // indirect
+	github.com/moby/sys/mountinfo v0.5.0 // indirect
 	github.com/moby/term v0.0.0-20210619224110-3f7ff695adc6 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
@@ -319,7 +319,7 @@ require (
 	github.com/nwaples/rardecode v1.1.2 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.0.1 // indirect
-	github.com/opencontainers/runc v1.0.2 // indirect
+	github.com/opencontainers/runc v1.1.5 // indirect
 	github.com/openlyinc/pointy v1.1.2 // indirect
 	github.com/packethost/packngo v0.1.1-0.20180711074735-b9cb5096f54c // indirect
 	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5 // indirect
